@@ -1,25 +1,29 @@
-const express = require('express')
+require("dotenv").config();
+const express = require("express");
+const router = express.Router();
+const ctrl = require("../../controllers/contacts");
+const validateBody = require("../../utils/validateBody");
+const isValidId = require("../../middlewares/isValidId");
+const {
+  addContactsSchema,
+  updateFavoriteSchema,
+} = require("../../schemas/contacts");
 
-const router = express.Router()
+router.get("/", ctrl.getAll);
 
-router.get('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.get("/:id", isValidId, ctrl.getById);
 
-router.get('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.post("/", validateBody(addContactsSchema), ctrl.add);
 
-router.post('/', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.delete("/:id", isValidId, ctrl.deleteById);
 
-router.delete('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.put("/:id", isValidId, validateBody(addContactsSchema), ctrl.updateById);
 
-router.put('/:contactId', async (req, res, next) => {
-  res.json({ message: 'template message' })
-})
+router.patch(
+  "/:id/favorite",
+  isValidId,
+  validateBody(updateFavoriteSchema),
+  ctrl.updateStatusContact
+);
 
-module.exports = router
+module.exports = router;
