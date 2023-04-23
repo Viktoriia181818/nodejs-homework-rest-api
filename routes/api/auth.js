@@ -5,6 +5,7 @@ const {
   registerSchema,
   loginSchema,
   subscriptionSchema,
+  verifySchema,
 } = require("../../schemas/user");
 const ctrl = require("../../controllers/auth");
 const authenticate = require("../../middlewares/authenticate");
@@ -26,6 +27,12 @@ router.patch(
   authenticate,
   validateBody(subscriptionSchema),
   ctrl.updateSubscription
+);
+router.get("/users/verify/:verificationToken", ctrl.verifyEmail);
+router.post(
+  "/users/verify",
+  validateBody(verifySchema),
+  ctrl.resendEmail
 );
 
 module.exports = router;
