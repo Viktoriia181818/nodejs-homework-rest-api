@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 const handleMongooseError = require("../helpers/handleMongooseError");
 
-
 const userSchema = new Schema(
   {
     password: {
@@ -18,7 +17,16 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
     token: String,
+    avatarURL: String,
   },
   { versionKey: false }
 );
